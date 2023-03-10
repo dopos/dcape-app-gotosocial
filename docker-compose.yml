@@ -1,0 +1,24 @@
+# custom app config
+# overrides DCAPE/apps/drone/dcape-app/docker-compose.yml
+
+version: '2'
+
+services:
+  app:
+    labels:
+      - traefik.http.services.${APP_TAG}.loadbalancer.server.port=8080
+    environment:
+      - GTS_HOST=${APP_SITE}
+      - GTS_DB_TYPE=postgres
+      - GTS_DB_ADDRESS=db
+      - GTS_DB_DATABASE=${PGDATABASE}
+      - GTS_DB_USER=${PGUSER}
+      - GTS_DB_PASSWORD=${PGPASSWORD}
+      - GTS_DB_TLS_MODE=false
+      - GTS_LETSENCRYPT_ENABLED=false
+      - GTS_PROTOCOL=http
+      ## For reverse proxy setups:
+      # GTS_TRUSTED_PROXIES: "172.x.x.x"
+    volumes:
+      - ${DCAPE_ROOT}/${DATA_PATH}:/gotosocial/storage
+
